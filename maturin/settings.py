@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'apps.localVenda',
     'apps.perfil',
     'apps.transportadora',
-    'apps.usuario'
+    'apps.usuario',
+    'apps.frontpage'
 ]
 
 MIDDLEWARE = [
