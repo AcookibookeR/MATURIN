@@ -1,0 +1,127 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Maturin | Home</title>
+        <meta charset="UTF-8">
+        <link rel="icon" href="{% static 'frontpage/img/image.png' %}" type='image/png'>
+    </head>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background-color: #0786a6ff;
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login{
+            background-color: white;
+            border-radius: 40px;
+            width: 400px;
+            height: 333px;
+        }
+        
+        .login form{
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .campo{
+            display: flex;
+            flex-direction: column;
+        }
+
+        input{
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 50vh;
+        }
+
+        button{
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            background-color: #0786a6ff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            width: 50vh;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <div class="login" id="login-form">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <h2 id="form-title">Login</h2>
+
+                        <input type="hidden" name="action" id="action" value="login">
+
+                        <div class="campo">
+                            <label for="username">Usuário:</label>
+                            <input type="text" id="username" name="username" placeholder="Digite seu login" required>
+                        </div>
+
+                        <div class="campo email-campo" style="display: none;">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="Digite seu email">
+                        </div>
+
+                        <div class="campo">
+                            <label for="password">Senha: </label>
+                            <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+                        </div>
+
+                        <button type="submit" id="submit-btn">Entrar</button>
+
+                        <p class="toggle">
+                            <span id="toggle-text">Não possui cadastro?</span>
+                            <a href="#" onclick="toggleForm()">Clique aqui</a>
+                        </p>
+                    </form>
+            </div>
+        </div>
+
+        <script>
+            let isCadastro = false;
+
+            function toggleForm() {
+                isCadastro = !isCadastro;
+
+                const actionInput = document.getElementById("action");
+
+                const title = document.getElementById("form-title");
+                const emailCampo = document.querySelector(".email-campo");
+                const toggleText = document.getElementById("toggle-text");
+                const button = document.getElementById("submit-btn");
+                const box = document.getElementById("login-form");
+
+                if (isCadastro) {
+                    actionInput.value = "register";
+                    title.innerText = "Cadastro";
+                    emailCampo.style.display = "flex";
+                    toggleText.innerText = "Já possui cadastro?";
+                    button.innerText = "Cadastrar";
+                    box.style.height = "420px";
+                } else {
+                    actionInput.value = "login";
+                    title.innerText = "Login";
+                    emailCampo.style.display = "none";
+                    toggleText.innerText = "Não possui cadastro?";
+                    button.innerText = "Entrar";
+                    box.style.height = "333px";
+                }
+            }
+        </script>
+    </body>
+</html>

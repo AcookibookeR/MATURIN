@@ -39,11 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.livro',
-    'apps.localVenda',
     'apps.perfil',
-    'apps.transportadora',
-    'apps.usuario',
-    'apps.frontpage'
+    'apps.usuario.apps.UsuarioConfig',
+    'apps.frontpage',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +125,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = "/"
