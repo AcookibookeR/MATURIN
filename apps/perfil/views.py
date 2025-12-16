@@ -12,7 +12,7 @@ def perfil_view(request):
     if not perfil.nome or not perfil.telefone:
         return render(request, "perfil/index.html")
     
-    return render(request, "perfil/a.html", {"perfil": perfil})
+    return render(request, "perfil/gerenciamento.html", {"perfil": perfil})
 
 
 @login_required

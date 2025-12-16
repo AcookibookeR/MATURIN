@@ -5,13 +5,12 @@ from django.db import models
 
 class Livro(models.Model):
     id_book = models.AutoField(primary_key=True)
+    isbn = models.IntegerField()
     nome = models.CharField(max_length=200)
-    categoria = models.CharField(max_length=100)
-    total_pag = models.IntegerField()
-    id_user_cadFK = models.ForeignKey('usuario.Usuario', on_delete=models.CASCADE)
-    sinopse = models.TextField()
-    autor = models.CharField(max_length=100)
+    autor = models.CharField(max_length=200)
+    editora = models.CharField(max_length=200)
     ano = models.IntegerField()
-
+    total_pag = models.IntegerField()
+    
     def __str__(self):
         return self.nome
