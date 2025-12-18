@@ -3,6 +3,9 @@
 <html>
     <head>
         <title>Gerenciamento principal</title>
+        <meta charset="UTF-8">
+        {% load static %}
+        <link rel="icon" href="{% static 'perfil/img/image.png' %}" type='image/png'>
     </head>
 
     <style>
@@ -65,7 +68,7 @@
         }
 
         
-        .selectperfil , .selectlivro {
+        .selectlivro {
             margin-bottom: 5px;
             font-size: 16px;
         }
@@ -132,12 +135,6 @@
                 <div class='welcomemessage'>
                     <div class="nomeUser">{{ user.username.capitalize }}</div>
 
-                    <label class="selectperfil">Perfil</label>
-                    <select>
-                        <option>- Ver Perfil</option>
-                        <option>- Post</option>
-                    </select>
-
                     <label class="selectlivro">Livro</label>
                     <select id="acaoLivro">
                         <option value="">- Selecionar Ação</option>
@@ -165,114 +162,267 @@
                 case "cadastrar":
                     container.innerHTML = `<div class="register-livro">
                     <form id="register-form" method="post">
-                        {% csrf_token %}
-                        <h2 id="form-title">CADASTRO LIVRO</h2>
+                        <h2 id="form-title">CADASTRAR LIVRO</h2>
 
-                        <div class="isbn">
-                            <label for="isbn">ISBN:</label>
-                            <input type="text" id="isbn" name="isbn" placeholder="Digite o ISBN" required>
+                        <div class="isbnCadastro">
+                            <label for="isbnCadastro">ISBN:</label>
+                            <input type="text" id="isbnCadastro" name="isbnCadastro" placeholder="Digite o ISBN" required>
                         </div>
 
-                        <div class="nome">
-                            <label for="nome">Nome:</label>
-                            <input type="text" id="nome" name="nome" placeholder="Digite o nome" required>
+                        <div class="nomeCadastro">
+                            <label for="nomeCadastro">Nome:</label>
+                            <input type="text" id="nomeCadastro" name="nomeCadastro" placeholder="Digite o nome" required>
                         </div>
 
-                        <div class="autor">
-                            <label for="autor">Autor: </label>
-                            <input type="text" id="autor" name="autor" placeholder="Digite o autor" required>
+                        <div class="autorCadastro">
+                            <label for="autorCadastro">Autor: </label>
+                            <input type="text" id="autorCadastro" name="autorCadastro" placeholder="Digite o autor" required>
                         </div>
 
-                        <div class="editora">
-                            <label for="editora">Editora: </label>
-                            <input type="text" id="editora" name="editora" placeholder="Digite a editora" required>
+                        <div class="editoraCadastro">
+                            <label for="editoraCadastro">Editora: </label>
+                            <input type="text" id="editoraCadastro" name="editoraCadastro" placeholder="Digite a editora" required>
                         </div>
 
-                        <div class="ano">
-                            <label for="ano">Ano: </label>
-                            <input type="number" id="ano" name="ano" placeholder="Digite o ano" required>
+                        <div class="anoCadastro">
+                            <label for="anoCadastro">Ano: </label>
+                            <input type="number" id="anoCadastro" name="anoCadastro" placeholder="Digite o ano" required>
                         </div>
 
-                        <div class="paginas">
-                            <label for="paginas">Páginas: </label>
-                            <input type="number" id="paginas" name="paginas" placeholder="Digite a quantidade de páginas" required>
+                        <div class="paginasCadastro">
+                            <label for="paginasCadastro">Páginas: </label>
+                            <input type="number" id="paginasCadastro" name="paginasCadastro" placeholder="Digite a quantidade de páginas" required>
                         </div>
 
-                        <button type="submit" id="submit-btn">Enviar</button>
+                        <button type="submit" id="submitCadastro">Enviar</button>
                     </form>
                 </div>`;
 
-                const URL_CADASTRO = "{% url 'cadastrar_livro' %}";
-                const form = document.getElementById("register-form");
+                const formC = document.getElementById("register-form");
 
-                form.addEventListener("submit", function (event) {
+                formC.addEventListener("submit", function (event) {
                     event.preventDefault();
 
-                    const isbn = document.getElementById("isbn").value;
-                    const nome = document.getElementById("nome").value;
-                    const autor = document.getElementById("autor").value;
-                    const editora = document.getElementById("editora").value;
-                    const ano = document.getElementById("ano").value;
-                    const paginas = document.getElementById("paginas").value;
+                    const isbnC = document.getElementById("isbnCadastro").value;
+                    const nomeC = document.getElementById("nomeCadastro").value;
+                    const autorC = document.getElementById("autorCadastro").value;
+                    const editoraC = document.getElementById("editoraCadastro").value;
+                    const anoC = document.getElementById("anoCadastro").value;
+                    const paginasC = document.getElementById("paginasCadastro").value;
 
-                    const dados = {
-                        isbn: isbn,
-                        nome: nome,
-                        autor: autor,
-                        editora: editora,
-                        ano: ano,
-                        total_pag: paginas,
+                    const dadosC = {
+                        isbn: isbnC,
+                        nome: nomeC,
+                        autor: autorC,
+                        editora: editoraC,
+                        ano: anoC,
+                        total_pag: paginasC,
                     };
 
-                    enviarParaDjango(dados);
+                    enviarParaDjangoCadastro(dadosC);
                 });
 
-                function enviarParaDjango(dados) {
-                    fetch(URL_CADASTRO, {
+                function enviarParaDjangoCadastro(dadosC) {
+                    fetch(`/livro/cadastrar/`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "X-CSRFToken": getCSRFToken()
                         },
-                        body: JSON.stringify(dados)
+                        body: JSON.stringify(dadosC)
                     })
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === "ok") {
-                            form.reset();
-
-                            form.innerHTML = `
-                                <h2>Cadastro concluído com sucesso 🎉</h2>
-                            `;
+                            alert("Livro cadastrado com sucesso!");
+                            formC.reset();
                         }
                     })
                     .catch(error => {
                         console.error("Erro:", error);
                     });
                 }
-                function getCSRFToken() {
-                    return document.querySelector('[name=csrfmiddlewaretoken]').value;
-                }
                     break;
                 case "buscar":
-                    container.innerHTML = `
-                    
-                    
-                    
-                    
-                    `;
+                    container.innerHTML = `<div class="find-livro">
+                        <h2 id="form-title">BUSCAR LIVRO</h2>
+
+                        <div class="isbnBuscar">
+                            <label for="isbnBuscar">ISBN:</label>
+                            <input type="text" id="isbnBuscar" name="isbnBuscar" placeholder="Digite o ISBN" required>
+                        </div>
+
+                        <div class="nomeBuscar">
+                            <label id="nomeBuscar"></label>
+                        </div>
+
+                        <div class="autorBuscar">
+                            <label id="autorBuscar"></label>
+                        </div>
+
+                        <div class="editoraBuscar">
+                            <label id="editoraBuscar"></label>
+                        </div>
+
+                        <div class="anoBuscar">
+                            <label id="anoBuscar"></label>
+                        </div>
+
+                        <div class="paginasBuscar">
+                            <label id="paginasBuscar"></label>
+                        </div>
+
+                        <button type="button" id="submitBuscar">Enviar</button>
+                </div>`;
+
+                const isbnInputBuscar = document.getElementById("isbnBuscar");
+                const submitBtnBuscar = document.getElementById("submitBuscar");
+
+                submitBtnBuscar.addEventListener("click", () => {
+                    const isbnB = isbnInputBuscar.value.trim();
+                    if (!isbnB) return;
+
+                    fetch(`/livro/buscar/?isbn=${isbnB}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert(data.error);
+                                return;
+                            }
+
+                            document.getElementById("nomeBuscar").textContent    = `Nome: ${data.nome}`;
+                            document.getElementById("autorBuscar").textContent   = `Autor: ${data.autor}`;
+                            document.getElementById("editoraBuscar").textContent = `Editora: ${data.editora}`;
+                            document.getElementById("anoBuscar").textContent     = `Ano: ${data.ano}`;
+                            document.getElementById("paginasBuscar").textContent = `Páginas: ${data.total_pag}`;
+                        })
+                        .catch(err => console.error("Erro no fetch:", err));
+                });
                     break;
                 case "atualizar":
-                    container.innerHTML = `<h2>Att Livro</h2>`;
+                    container.innerHTML = `<div class="update-livro">
+                    <form id="update-form" method="post">
+                        <h2 id="form-title">ATUALIZAR LIVRO</h2>
+
+                        <div class="isbnAtualizar">
+                            <label for="isbnAtualizar">ISBN:</label>
+                            <input type="text" id="isbnAtualizar" name="isbnAtualizar" placeholder="Digite o ISBN" required>
+                        </div>
+
+                        <div class="nomeAtualizar">
+                            <label for="nomeAtualizar">Nome:</label>
+                            <input type="text" id="nomeAtualizar" name="nomeAtualizar" placeholder="Digite o nome" required>
+                        </div>
+
+                        <div class="autorAtualizar">
+                            <label for="autorAtualizar">Autor: </label>
+                            <input type="text" id="autorAtualizar" name="autorAtualizar" placeholder="Digite o autor" required>
+                        </div>
+
+                        <div class="editoraAtualizar">
+                            <label for="editoraAtualizar">Editora: </label>
+                            <input type="text" id="editoraAtualizar" name="editoraAtualizar" placeholder="Digite a editora" required>
+                        </div>
+
+                        <div class="anoAtualizar">
+                            <label for="anoAtualizar">Ano: </label>
+                            <input type="number" id="anoAtualizar" name="anoAtualizar" placeholder="Digite o ano" required>
+                        </div>
+
+                        <div class="paginasAtualizar">
+                            <label for="paginasAtualizar">Páginas: </label>
+                            <input type="number" id="paginasAtualizar" name="paginasAtualizar" placeholder="Digite a quantidade de páginas" required>
+                        </div>
+
+                        <button type="submit" id="submitAtualizar">Enviar</button>
+                    </form>
+                </div>`;
+
+                const formA = document.getElementById("update-form");
+
+                formA.addEventListener("submit", function (event) {
+                    event.preventDefault();
+
+                    const isbnA = document.getElementById("isbnAtualizar").value;
+                    const nomeA = document.getElementById("nomeAtualizar").value;
+                    const autorA = document.getElementById("autorAtualizar").value;
+                    const editoraA = document.getElementById("editoraAtualizar").value;
+                    const anoA = document.getElementById("anoAtualizar").value;
+                    const paginasA = document.getElementById("paginasAtualizar").value;
+
+                    const dadosA = {
+                        isbn: isbnA,
+                        nome: nomeA,
+                        autor: autorA,
+                        editora: editoraA,
+                        ano: anoA,
+                        total_pag: paginasA,
+                    };
+
+                    enviarParaDjangoAtualizar(dadosA);
+                });
+
+                function enviarParaDjangoAtualizar(dadosA) {
+                    fetch(`/livro/atualizar/`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(dadosA)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "ok") {
+                            alert("Livro atualizado com sucesso!");
+                            formA.reset();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Erro:", error);
+                    });
+                }
+
                     break;
                 case "deletar":
-                    container.innerHTML = `<h2>Del Livro</h2>`;
+                    container.innerHTML = `<div class="delete-livro">
+                        <h2 id="form-title">DELETAR LIVRO</h2>
+
+                        <div class="isbnDeletar">
+                            <label for="isbnDeletar">ISBN:</label>
+                            <input type="text" id="isbnDeletar" name="isbnDeletar" placeholder="Digite o ISBN" required>
+                        </div>
+
+                        <button type="button" id="submitDeletar">Enviar</button>
+                </div>`;
+
+                const isbnInputDeletar = document.getElementById("isbnDeletar");
+                const submitBtnDeletar = document.getElementById("submitDeletar");
+
+                submitBtnDeletar.addEventListener("click", () => {
+                    const isbnD = isbnInputDeletar.value.trim();
+                    if (!isbnD) return;
+
+                    fetch("/livro/deletar/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ isbn: isbnD })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert(data.error);
+                        } else if (data.status === "ok") {
+                            alert("Livro deletado com sucesso!");
+                            isbnInputDeletar.value = "";
+                        }
+                    })
+                    .catch(err => console.error("Erro no fetch:", err));
+                });
                     break;
                 default:
                     container.innerHTML = "";
             }
         });
-
-        
     </script>
 </html>
