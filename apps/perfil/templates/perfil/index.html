@@ -176,10 +176,11 @@
             .then(data => {
                 if (data.status === "ok") {
                     form.reset();
+                    alert("Por favor, recarregue a página para atualizar suas informações.");
 
                     form.innerHTML = `
-                        <h2>Cadastro concluído com sucesso 🎉</h2>
-                        <p>Seja bem-vindo à plataforma.</p>
+                        <h2>Cadastro Concluído!</h2>
+                        <p>Obrigado por completar seu cadastro. Você já pode começar a usar nossa plataforma.</p>
                     `;
                 }
             })
